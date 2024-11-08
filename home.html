@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Rent a Spot</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: #1a1a1a;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffd700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #fff;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background-color: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #e6c200;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .spaces-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .space-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .space-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .space-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .vehicle-number {
+            font-size: 1.1em;
+            color:#dc3545;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .space-card p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #1a1a1a;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #333;
+        }
+
+    .remove-btn {
+        background-color: #dc3545;
+        width: 30%;
+        border-style: solid;
+        border-block-color: black;
+        border-color: black;
+        border-width: 2px;
+        color: white;
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 0.25rem 0.75rem;
+        margin-top: 1rem;
+    }
+
+    .remove-btn:hover {
+        background-color: #c82333;
+    }
+
+    .booking-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    span.status-badge.status-inactive{
+        border: black;
+        background: white;
+        color: black;
+        border-style: solid;
+        border-radius: 9999px;
+        border-width: 2%;
+    }
+
+    button.action-btn.remove-btn{
+        background-color: #dc3545;
+        color: white;
+        width: 100%;
+        padding: 0.5%;
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-top: 1rem;
+        padding-top: 4%;
+        padding-bottom: 4%;
+    }
+
+    button.action-btn.remove-btn:hover{
+        background-color: #c82333;
+    }
+
+    button.action-btn.inactive-btn{
+        background-color: #dc3545;
+        width: 20%;
+        border-style: groove;
+        border-block-color: black;
+        border-color: black;
+        border-width: 3px;
+        color: white;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 0.25rem 0.75rem;
+        margin-top: 1rem;
+}
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-top: 1rem;
+    }
+
+    .status-active {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .status-completed {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .status-inactive {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .add-space-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        margin-bottom: 3rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .space-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    #imagePreview {
+        max-width: 100%;
+        max-height: 200px;
+        margin-top: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #1a1a1a;
+        font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .booking-details {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #ddd;
+    }
+
+    .booking-time {
+        color: #666;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    
+
+    @media (max-width: 768px) {
+        .nav-content {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-links {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .spaces-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+</style>
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="nav-content">
+        <div class="logo"><img src="rentaspot.jpg" alt="" height="30%" width="30%"></div>
+        <div class="nav-links">
+            <a href="#" onclick="showSection('spaces')" class="active" id="spacesLink">Spaces</a>
+            <a href="#" onclick="showSection('bookings')" id="bookingsLink">Bookings</a>
+        </div>
+        <div class="user-info">
+            <span id="userEmail"></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div id="ownerControls" class="add-space-form" style="display: none;">
+        <h2>Add New Parking Space</h2>
+        <form onsubmit="handleAddSpace(event)">
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="location" required>
+            </div>
+            <div class="form-group">
+                <label>Price per Hour (Rs)</label>
+                <input type="number" id="price" min="0" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" id="description" required>
+            </div>
+            <div class="form-group">
+                <label>Available Days and Hours</label>
+                <textarea id="availability" placeholder="e.g., Monday to Friday from 10 AM - 4 PM" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Upload Image</label>
+                <input type="file" id="imageUpload" accept="image/*" onchange="previewImage(event)" required>
+            </div>
+            <img id="imagePreview" class="space-image" alt="Image Preview" style="display: none;">
+            <button type="submit" class="action-btn">Add Space</button>
+        </form>
+    </div>
+
+    <div id="spacesSection">
+        <h2 class="section-title">Available Parking Spaces</h2>
+        <div class="spaces-grid" id="spacesGrid"></div>
+    </div>
+
+    <div id="bookingsSection" style="display: none;">
+        <h2 class="section-title">My Bookings</h2>
+        <div id="bookingsList"></div>
+    </div>
+</div>
+
+<script>
+    // Check if user is logged in
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+        window.location.href = 'login.html';
+    }
+
+    // Display user email
+    document.getElementById('userEmail').textContent = currentUser.email;
+
+    // Show owner controls if user is an owner
+    const ownerControls = document.getElementById('ownerControls');
+    if (currentUser.userType === 'owner') {
+        ownerControls.style.display = 'block';
+    }
+
+    // Switch between spaces and bookings sections
+    function showSection(section) {
+        const spacesSection = document.getElementById('spacesSection');
+        const bookingsSection = document.getElementById('bookingsSection');
+        const ownerControls = document.getElementById('ownerControls');
+        const spacesLink = document.getElementById('spacesLink');
+        const bookingsLink = document.getElementById('bookingsLink');
+
+        if (section === 'spaces') {
+            spacesSection.style.display = 'block';
+            bookingsSection.style.display = 'none';
+            if (currentUser.userType === 'owner') {
+                ownerControls.style.display = 'block';
+            }
+            spacesLink.classList.add('active');
+            bookingsLink.classList.remove('active');
+            loadSpaces();
+        } else if (section === 'bookings') {
+            spacesSection.style.display = 'none';
+            bookingsSection.style.display = 'block';
+            ownerControls.style.display = 'none';
+            spacesLink.classList.remove('active');
+            bookingsLink.classList.add('active');
+            loadBookings();
+        }
+    }
+
+    function isValidVehicleNumber(number) {
+        const regex = /^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}$/;
+        return regex.test(number);
+    }
+
+    // Load and display parking spaces
+    function loadSpaces() {
+        const spaces = JSON.parse(localStorage.getItem('spaces')) || [];
+        const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+        const availableSpaces = spaces.filter(space =>
+            !bookings.some(booking =>
+                booking.spaceId === space.id && booking.status === 'active'
+            )
+        );
+    
+        const spacesGrid = document.getElementById('spacesGrid');
+    
+        spacesGrid.innerHTML = availableSpaces.map(space => `
+            <div class="space-card">
+                ${space.image ? `<img src="${space.image}" class="space-image" alt="Parking Space Image">` : ''}
+                <h3>${space.location}</h3>
+                <p>Rs ${space.price}/hour</p>
+                <p>${space.description}</p>
+                <p>Available: ${space.availability}</p>
+                <p>Owner: ${space.owner}</p>
+                ${currentUser.userType === 'customer'
+                    ? `<button class="action-btn" onclick="bookSpace(${space.id})">Book Now</button>`
+                    : space.owner === currentUser.email
+                        ? `<button class="action-btn remove-btn" onclick="removeSpace(${space.id})">Remove Space</button>`
+                        : ''
+                }
+            </div>
+        `).join('');
+    }
+
+    // Load and display bookings
+    function loadBookings() {
+        const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+        const spaces = JSON.parse(localStorage.getItem('spaces')) || [];
+        let userBookings;
+        
+        if (currentUser.userType === 'customer') {
+            userBookings = bookings.filter(booking => booking.userId === currentUser.email);
+        } else {
+            userBookings = bookings.filter(booking => {
+                const space = spaces.find(s => s.id === booking.spaceId);
+                return space && space.owner === currentUser.email;
+            });
+        }
+    
+        const bookingsList = document.getElementById('bookingsList');
+        
+        if (userBookings.length === 0) {
+            bookingsList.innerHTML = '<p>No bookings found.</p>';
+            return;
+        }
+    
+        bookingsList.innerHTML = userBookings.map(booking => {
+            const space = spaces.find(s => s.id === booking.spaceId);
+            if (!space) return '';
+    
+            return `
+                <div class="booking-card">
+                    <h3>${space.location}</h3>
+                    <p>Booked by: ${booking.userId}</p>
+                    <p>Price: Rs ${space.price}/hour</p>
+                    <div class="booking-details">
+                        <p>Booked on: ${new Date(booking.bookingDate).toLocaleDateString()}</p>
+                        <p class="booking-time">Time: ${new Date(booking.bookingDate).toLocaleTimeString()}</p>
+                        <p><strong>OTP: ${booking.otp}</strong></p>
+                        <p class="vehicle-number"><strong>Vehicle Number: ${booking.vehicleNumber || 'Not provided'}</strong></p>
+                    </div>
+                    <div class="booking-status-container">
+                        <span class="status-badge status-${booking.status}">${booking.status}</span>
+                        ${currentUser.userType === 'owner' && booking.status === 'active' ? 
+                            `<button 
+                                class="action-btn inactive-btn"
+                                onclick="toggleBookingStatus(${booking.id})"
+                            >
+                                Mark as Inactive
+                            </button>`
+                            : ''
+                        }
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Handle adding new parking space
+    function handleAddSpace(event) {
+        event.preventDefault();
+        const spaces = JSON.parse(localStorage.getItem('spaces')) || [];
+        
+        const newSpace = {
+            id: Date.now(),
+            location: document.getElementById('location').value,
+            price: document.getElementById('price').value,
+            description: document.getElementById('description').value,
+            availability: document.getElementById('availability').value,
+            owner: currentUser.email,
+            image: document.getElementById('imagePreview').src || ''
+        };
+        
+        spaces.push(newSpace);
+        localStorage.setItem('spaces', JSON.stringify(spaces));
+        
+        event.target.reset();
+        document.getElementById('imagePreview').style.display = 'none';
+        loadSpaces();
+    }
+
+            // Handle removing a space
+            function removeSpace(spaceId) {
+                const spaces = JSON.parse(localStorage.getItem('spaces')) || [];
+                const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    
+                const hasActiveBookings = bookings.some(booking =>
+                    booking.spaceId === spaceId && booking.status === 'active'
+                );
+    
+                if (hasActiveBookings) {
+                    alert('Cannot remove space with active bookings');
+                    return;
+                }
+    
+                const updatedSpaces = spaces.filter(space => space.id !== spaceId);
+                localStorage.setItem('spaces', JSON.stringify(updatedSpaces));
+                loadSpaces();
+            }
+    
+            // Handle booking a space
+            function bookSpace(spaceId) {
+                const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+                const spaces = JSON.parse(localStorage.getItem('spaces')) || [];
+            
+                // Check if user already has an active booking
+                const activeBooking = bookings.find(booking =>
+                    booking.userId === currentUser.email &&
+                    booking.status === 'active'
+                );
+            
+                if (activeBooking) {
+                    alert('You already have an active booking. Please complete or cancel it before making a new booking.');
+                    return;
+                }
+            
+                let vehicleNumber;
+                do {
+                    vehicleNumber = prompt('Please enter your vehicle plate number (Format: KA01AB1234):');
+                    if (!vehicleNumber) {
+                        alert('Booking cancelled. Vehicle number is required.');
+                        return;
+                    }
+                    if (!isValidVehicleNumber(vehicleNumber)) {
+                        alert('Invalid vehicle number format. Please use format: KA01AB1234');
+                    }
+                } while (!isValidVehicleNumber(vehicleNumber));
+    
+                const otp = generateOTP();
+            
+                const newBooking = {
+                    id: Date.now(),
+                    spaceId: spaceId,
+                    userId: currentUser.email,
+                    bookingDate: new Date().toISOString(),
+                    status: 'active',
+                    vehicleNumber: vehicleNumber,
+                    otp: otp
+                };
+            
+                bookings.push(newBooking);
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+            
+                // Trigger confetti animation
+                triggerConfetti();
+            
+                alert(`Booking confirmed! Your vehicle number is: ${newBooking.vehicleNumber}\nYour OTP is: ${otp}`);
+                
+                loadSpaces();
+                showSection('bookings');
+            }
+    
+            // Toggle booking status
+            function toggleBookingStatus(bookingId) {
+                const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+                const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+    
+                if (bookingIndex !== -1) {
+                    if (confirm('Are you sure you want to mark this booking as inactive?')) {
+                        bookings[bookingIndex].status = 'inactive';
+                        localStorage.setItem('bookings', JSON.stringify(bookings));
+    
+                        // Reload the bookings display
+                        loadBookings();
+                        // Also reload spaces to reflect availability
+                        loadSpaces();
+                    }
+                }
+            }
+    
+            // Handle logout
+            function logout() {
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('currentUser');
+                    window.location.href = 'login.html';
+                }
+            }
+    
+            // Generate OTP
+            function generateOTP() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+    
+            // Initialize the application
+            function init() {
+                // Check if spaces exist in localStorage, if not, initialize with empty array
+                if (!localStorage.getItem('spaces')) {
+                    localStorage.setItem('spaces', JSON.stringify([]));
+                }
+    
+                // Check if bookings exist in localStorage, if not, initialize with empty array
+                if (!localStorage.getItem('bookings')) {
+                    localStorage.setItem('bookings', JSON.stringify([]));
+                }
+    
+                try {
+                    if (!localStorage.getItem('users')) {
+                        localStorage.setItem('users', JSON.stringify([]));
+                        console.log('Initialized localStorage with empty users array.');
+                    }
+                } catch (error) {
+                    console.error('localStorage error:', error);
+                }
+    
+                // Load initial view
+                loadSpaces();
+                showSection('spaces');
+            }
+    
+            // Add event listener for page load
+            window.addEventListener('load', init);
+    
+            // Add event listener for refresh/reload
+            window.addEventListener('beforeunload', function (e) {
+                // You can add any cleanup code here if needed
+            });
+    
+            // Handle network errors
+            window.addEventListener('offline', function (e) {
+                alert('You are currently offline. Some features may not work properly.');
+            });
+    
+            // Handle network recovery
+            window.addEventListener('online', function (e) {
+                alert('You are back online!');
+                loadSpaces();
+                loadBookings();
+            });
+    
+            function previewImage(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const imagePreview = document.getElementById('imagePreview');
+                    imagePreview.src = reader.result;
+                    imagePreview.style.display = 'block';
+                };
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            }
+    
+            function triggerConfetti() {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#ffd700', '#ffffff', '#000000'] // Gold, white, and black colors to match your theme
+                });
+            }
+    
+        </script>
+    </body>
+    
+    </html>
